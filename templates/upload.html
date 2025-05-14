@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {% block content %}
+
+
+<div class="d-flex flex-column pt-5 pb-3">
+  <h1 class="pb-5">{% block title %} Updates to Make {% endblock %}</h1>
+  <div class="d-flex justify-content-center align-items-center">
+      
+      <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}" class="d-flex flex-column align-items-center w-100">
+
+        <div class="w-100 d-flex justify-content-center align-items-center mb-3" style="background-color: #D9D9D9; height: 62px">
+          <label for="file-upload" style="cursor:pointer; margin-bottom: 0px" class="text-dark w-100"><div class="d-flex flex-row justify-content-center"><img src="/static/images/file-import-solid.svg" alt="" width="20" style="margin-right:10px" />Select File</div></label>
+          <input id="file-upload" type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none"></input>
+        </div>
+        <div class="d-flex flex-row align-items-center w-25 justify-content-between">
+          <div class="d-flex flex-row align-items-center">
+            <img src="/static/images/file-excel-solid.svg" alt="" width="20" style="margin-right:10px" />
+            <div id="file-name" style="height: 30px; color: gray" class="d-flex justify-content-center align-items-center">File chosen</div>
+          </div>
+          
+          <button type="submit" class="btn text-white" style="background-color:#457bba; width: 121px; height: 45px">Submit</button>
+        </div>
+      </form>
+      <script>
+        var input = $("input:file");
+      </script>
+      
+  </div>
+</div>
+{% if not submitted %}
+<div class="w-100 d-flex justify-content-center align-items-center" style="height: 500px; background-color: #F8F8F8;">Upload an excel file to see changes</div>
+
+{% else %}
+<div class="d-flex flex-column w-100">
+  <div class="d-flex flex-column pb-4 w-100">
+    <h1>Enable</h1>
+    {% if to_enable | length == 0 %}
+      <p class="pl-3">Nothing.</p>
+    {% endif %}
+    
+    {% for hotspot in to_enable %}
+      <div class="d-flex flex-row w-100">
+        <div class="h-60 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
+          <div
+            class="d-flex flex-row p-3 justify-content-between align-items-center" 
+          >
+            <div style="padding-left: 10px">{{hotspot['call_number']}}</div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="d-flex flex-column pb-4 w-100">
+    <h1>Disable</h1>
+    
+    {% if to_disable | length == 0 %}
+      <p class="pl-3">Nothing.</p>
+    {% endif %}
+    
+    {% for hotspot in to_disable %}
+    <div class="d-flex flex-row w-100">
+      <div class="h-60 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
+        <div
+          class="d-flex flex-row p-3 justify-content-between align-items-center"
+        >
+          <div style="padding-left: 10px">{{hotspot}}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+<form method="post" action="{{url_for('index')}}" class="d-flex justify-content-end pt-3 pb-5">
+  <button type="submit" class="btn d-flex justify-content-center text-white align-items-center" style="width:174px; height: 53px; background-color: #BA8445; font-size: 20px; font-weight: 600" 
+  {%
+    if
+    to_disable | length == 0 and to_enable | length == 0
+    %}
+    disabled
+    {%
+    endif
+    %}>Apply</button>
+</form>
+<script>
+  
+  document.getElementById('file-upload').addEventListener('change', function () {
+    const files = event.target.files;
+    document.getElementById("file-name").innerHTML = files[0].name
+    })
+  
+</script>
+{% endblock %}
+

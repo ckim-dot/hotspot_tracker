@@ -1,0 +1,45 @@
+{% extends 'base.html' %} edit {% block content %} {% block title %} Edit
+{{hotspot['call_number']}} {% endblock %}
+
+<form method="post">
+  <fieldset>
+    <div class="d-flex flex-column justify-content-start">
+      <label for="disabled">Disabled</label>
+
+      <input
+        type="radio"
+        id="disabled"
+        name="disabled"
+        value="disable"
+        class="d-flex justify-content-start"
+        {%
+        if
+        is_disabled
+        %}
+        checked
+        {%
+        endif
+        %}
+      />
+
+      <label for="enabled">Enabled</label>
+      <input
+        type="radio"
+        id="enabled"
+        name="disabled"
+        value="enable"
+        {%
+        if
+        not
+        is_disabled
+        %}
+        checked
+        {%
+        endif
+        %}
+      />
+    </div>
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
