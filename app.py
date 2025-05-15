@@ -121,8 +121,22 @@ def upload():
 def confirm_delete():
     if request.method == "POST":
         delete_enabled()
+        flash('Deleted all enabled hotspots!', 'success')
     
-    return render_template('confirm_delete.html')
+    return redirect(url_for('index'))
+
+@app.route('/<int:id>/toggle', methods=("POST", "GET"))
+def toggle(id):
+    hotspot = get_hotspot(id)
+    print(hotspot['is_disabled'])
+    new_val = 1 ^ hotspot['is_disabled']
+    print(new_val)
+    conn = get_db_connection()
+    conn.execute('UPDATE hotspots SET is_disabled = ?' 'WHERE id = ?', (new_val, id))
+    conn.commit()
+    conn.close()
+    flash("toggled")
+    return redirect(url_for('index'))
 
 @app.route('/<int:id>/delete', methods=("POST",))
 def delete(id):
@@ -149,10 +163,12 @@ def create():
 def edit(id):
     hotspot = get_hotspot(id)
     is_disabled = hotspot['is_disabled']
+    
     if request.method == "POST":
         is_disabled = 'disable' == request.form['disabled']
+        call_number = request.form['name']
         conn = get_db_connection()
-        conn.execute('UPDATE hotspots SET is_disabled = ?' 'WHERE id = ?', (is_disabled,id))
+        conn.execute('UPDATE hotspots SET call_number = ?, is_disabled = ?' 'WHERE id = ?', (call_number, is_disabled,id))
         conn.commit()
         conn.close()
         flash('"{}" updated'.format(hotspot['call_number']), 'success')

@@ -1,45 +1,109 @@
-{% extends 'base.html' %} edit {% block content %} {% block title %} Edit
-{{hotspot['call_number']}} {% endblock %}
+{% extends 'base.html' %} edit {% block content %}
+<h1 class="mb-5 mt-5">{% block title %} Hotspot {{hotspot['call_number']}}</h1>
+{% endblock %}
 
 <form method="post">
-  <fieldset>
-    <div class="d-flex flex-column justify-content-start">
-      <label for="disabled">Disabled</label>
-
-      <input
-        type="radio"
-        id="disabled"
-        name="disabled"
-        value="disable"
-        class="d-flex justify-content-start"
-        {%
-        if
-        is_disabled
-        %}
-        checked
-        {%
-        endif
-        %}
-      />
-
-      <label for="enabled">Enabled</label>
-      <input
-        type="radio"
-        id="enabled"
-        name="disabled"
-        value="enable"
-        {%
-        if
-        not
-        is_disabled
-        %}
-        checked
-        {%
-        endif
-        %}
-      />
-    </div>
-  </fieldset>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <div class="form-group w-50">
+    <label for="name">Call Number</label>
+    <input type="text" name="name" class="form-control" required value="{{ request.form['name'] or hotspot['call_number'] }}"/>
+  </div>
+  <fieldset id="radios">
+      <div
+        class="d-flex flex-row justify-content-start w-100"
+        style="height: 50px"
+      >
+        <div
+          id="disabled-box"
+          class="d-flex align-items-center justify-content-between mr-2"
+          style="
+            width: 225px;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 10px;
+            border-color: #ced4da;
+          "
+        >
+          <label for="disabled" class="mb-0 p-2">Disabled</label>
+          <input
+            type="radio"
+            id="disabled"
+            name="disabled"
+            value="disable"
+            class="mr-3"
+            {%
+              if
+              is_disabled
+              %}
+              checked
+              {%
+              endif
+            %}
+          />
+        </div>
+        <div
+          id="enabled-box"
+          class="d-flex align-items-center justify-content-between"
+          style="
+            width: 225px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #ced4da;
+            border-radius: 10px;
+          "
+        >
+          <label for="enabled" class="mb-0 p-2">Enabled</label>
+          <input
+            type="radio"
+            id="enabled"
+            name="disabled"
+            value="enable"
+            class="mr-3"
+            {%
+              if
+              not
+              is_disabled
+              %}
+              checked
+              {%
+              endif
+              %}
+          />
+        </div>
+      </div>
+    </fieldset>
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+  </div>
+  
 </form>
+
+<script>
+  // set initial styling for selected option
+  if(document.getElementById("disabled").checked){
+    document.getElementById("disabled-box").style.borderColor = "#2c83ec";
+    document.getElementById("disabled-box").style.backgroundColor ="#d4e9fe";
+  }else{
+    document.getElementById("enabled-box").style.borderColor = "#2c83ec";
+    document.getElementById("enabled-box").style.backgroundColor ="#d4e9fe";
+  }
+
+  document
+    .getElementById("radios")
+    .addEventListener("change", function (event) {
+      if (document.getElementById("disabled").checked) {
+        document.getElementById("enabled-box").style.borderColor = "#ced4da";
+        document.getElementById("enabled-box").style.backgroundColor =
+          "transparent";
+        document.getElementById("disabled-box").style.borderColor = "#2c83ec";
+        document.getElementById("disabled-box").style.backgroundColor =
+          "#d4e9fe";
+      } else {
+        document.getElementById("disabled-box").style.borderColor = "#ced4da";
+        document.getElementById("disabled-box").style.backgroundColor =
+          "transparent";
+        document.getElementById("enabled-box").style.borderColor = "#2c83ec";
+        document.getElementById("enabled-box").style.backgroundColor =
+          "#d4e9fe";
+      }
+    });
+</script>
 {% endblock %}
