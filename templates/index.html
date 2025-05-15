@@ -3,6 +3,15 @@
   class="d-flex flex-row justify-content-between pt-5 pb-5 align-items-center"
 >
   <h1>{% block title %} Tracker {% endblock %}</h1>
+  <button type="submit" class="btn" data-toggle="modal" data-target="#modal">
+    <div
+      class="d-flex align-items-center justify-content-end"
+      style="width: 125px"
+    >
+      <img src="/static/images/plus-solid.svg" alt="" width="15" />
+      <span class="pl-2">Add Hotspot</span>
+    </div>
+  </button>
 </div>
 <div class="d-flex flex-column">
   <div class="d-flex justify-content-start">
@@ -34,14 +43,6 @@
     </form>
   </div>
 
-  <!-- <button
-    type="submit"
-    class="btn btn-primary"
-    data-toggle="modal"
-    data-target="#modal"
-  >
-    Add
-  </button> -->
   <div
     class="modal fade"
     id="modal"
@@ -72,27 +73,57 @@
                 type="text"
                 placeholder="ABCD 123"
                 class="form-control"
+                required
               />
             </div>
             <div class="">
-              <fieldset>
-                <div class="d-flex flex-column justify-content-start">
-                  <label for="disabled">Disabled</label>
-                  <input
-                    type="radio"
-                    id="disabled"
-                    name="disabled"
-                    value="disable"
-                    class="d-flex justify-content-start"
-                  />
-
-                  <label for="enabled">Enabled</label>
-                  <input
-                    type="radio"
-                    id="enabled"
-                    name="disabled"
-                    value="enable"
-                  />
+              <fieldset id="radios">
+                <div
+                  class="d-flex flex-row justify-content-between w-100"
+                  style="height: 50px"
+                >
+                  <div
+                    id="disabled-box"
+                    class="d-flex align-items-center justify-content-between"
+                    style="
+                      width: 225px;
+                      border-style: solid;
+                      border-width: 1px;
+                      border-radius: 10px;
+                      border-color: #2c83ec;
+                      background-color: #d4e9fe;
+                    "
+                  >
+                    <label for="disabled" class="mb-0 p-2">Disabled</label>
+                    <input
+                      type="radio"
+                      id="disabled"
+                      name="disabled"
+                      value="disable"
+                      class="mr-3"
+                      checked
+                    />
+                  </div>
+                  <div
+                    id="enabled-box"
+                    class="d-flex align-items-center justify-content-between"
+                    style="
+                      width: 225px;
+                      border-style: solid;
+                      border-width: 1px;
+                      border-color: #ced4da;
+                      border-radius: 10px;
+                    "
+                  >
+                    <label for="enabled" class="mb-0 p-2">Enabled</label>
+                    <input
+                      type="radio"
+                      id="enabled"
+                      name="disabled"
+                      value="enable"
+                      class="mr-3"
+                    />
+                  </div>
                 </div>
               </fieldset>
             </div>
@@ -171,13 +202,33 @@
     {% endfor %}
   </div>
   <script>
+    document
+      .getElementById("radios")
+      .addEventListener("change", function (event) {
+        if (document.getElementById("disabled").checked) {
+          document.getElementById("enabled-box").style.borderColor = "#ced4da";
+          document.getElementById("enabled-box").style.backgroundColor =
+            "transparent";
+          document.getElementById("disabled-box").style.borderColor = "#2c83ec";
+          document.getElementById("disabled-box").style.backgroundColor =
+            "#d4e9fe";
+        } else {
+          document.getElementById("disabled-box").style.borderColor = "#ced4da";
+          document.getElementById("disabled-box").style.backgroundColor =
+            "transparent";
+          document.getElementById("enabled-box").style.borderColor = "#2c83ec";
+          document.getElementById("enabled-box").style.backgroundColor =
+            "#d4e9fe";
+        }
+      });
+
     $(document).ready(function () {
       $("#search-input").on("input", function () {
         let query = $(this).val();
         $.ajax({
           url: "/",
           type: "GET",
-          data: { search_query: query },
+          data: { search_query: query, is_searching: 1 },
           success: function (data) {
             $("#search-results").html(data);
           },

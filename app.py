@@ -78,7 +78,6 @@ def get_actions(file):
     return to_disable, to_enable
 
 def search(query):
-    
     conn = get_db_connection()
     search_results = conn.execute("SELECT * FROM hotspots WHERE call_number LIKE ?", ('%' + query + '%',)).fetchall()
     conn.close()
@@ -91,16 +90,17 @@ to_enable = []
 def index():
     if request.method == 'POST':
         update_status(to_disable, to_enable)
+    
     results = []
-    if request.args.get('search_query'):
+
+    if request.args.get('is_searching'):
         results = search(request.args.get('search_query'))
+        return render_template('results.html', hotspots = results)
     else:
         conn = get_db_connection()
         results = conn.execute('SELECT * FROM hotspots').fetchall()
         conn.close()
     
-    if request.headers.get('X-requested-With') == 'XMLHTTPRequest':
-        return render_template('results.html', hotspots = results)
     return render_template('index.html', hotspots = results)
     
 
