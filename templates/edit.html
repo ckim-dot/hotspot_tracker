@@ -71,7 +71,7 @@
         </div>
       </div>
     </fieldset>
-    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    <button type="submit" class="btn btn-primary mt-3" style="background-color: #457bba;">Submit</button>
   </div>
   
 </form>
@@ -80,10 +80,12 @@
   // set initial styling for selected option
   if(document.getElementById("disabled").checked){
     document.getElementById("disabled-box").style.borderColor = "#2c83ec";
-    document.getElementById("disabled-box").style.backgroundColor ="#d4e9fe";
+    document.getElementById("disabled-box").style.backgroundColor ="#d4e9fe"
+    document.getElementById("enabled-box").style.backgroundColor ="white"
   }else{
     document.getElementById("enabled-box").style.borderColor = "#2c83ec";
-    document.getElementById("enabled-box").style.backgroundColor ="#d4e9fe";
+    document.getElementById("enabled-box").style.backgroundColor ="#d4e9fe"
+    document.getElementById("disabled-box").style.backgroundColor ="white"
   }
 
   document
@@ -92,17 +94,17 @@
       if (document.getElementById("disabled").checked) {
         document.getElementById("enabled-box").style.borderColor = "#ced4da";
         document.getElementById("enabled-box").style.backgroundColor =
-          "transparent";
+          "white";
         document.getElementById("disabled-box").style.borderColor = "#2c83ec";
         document.getElementById("disabled-box").style.backgroundColor =
-          "#d4e9fe";
+          "#d4e9fe"
       } else {
         document.getElementById("disabled-box").style.borderColor = "#ced4da";
         document.getElementById("disabled-box").style.backgroundColor =
-          "transparent";
+          "white";
         document.getElementById("enabled-box").style.borderColor = "#2c83ec";
         document.getElementById("enabled-box").style.backgroundColor =
-          "#d4e9fe";
+          "#d4e9fe"
       }
     });
 </script>
