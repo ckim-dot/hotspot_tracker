@@ -39,6 +39,7 @@ def delete_enabled():
     conn.execute('DELETE FROM hotspots WHERE is_disabled = ?', (False, ))
     conn.commit()
     conn.close()
+    
 def get_actions(file):
     to_enable.clear()
     to_disable.clear()
@@ -107,6 +108,7 @@ def index():
 @app.route('/upload', methods=['GET', "POST"])
 def upload():
     if request.method == "POST":
+        
         if request.files['file'].filename == '':
             flash("please upload a file", 'error')
         else:
@@ -128,14 +130,12 @@ def confirm_delete():
 @app.route('/<int:id>/toggle', methods=("POST", "GET"))
 def toggle(id):
     hotspot = get_hotspot(id)
-    print(hotspot['is_disabled'])
     new_val = 1 ^ hotspot['is_disabled']
-    print(new_val)
     conn = get_db_connection()
     conn.execute('UPDATE hotspots SET is_disabled = ?' 'WHERE id = ?', (new_val, id))
     conn.commit()
     conn.close()
-    flash("toggled")
+    flash('"{}" status changed'.format(hotspot['call_number']), "success")
     return redirect(url_for('index'))
 
 @app.route('/<int:id>/delete', methods=("POST",))

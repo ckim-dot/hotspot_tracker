@@ -148,7 +148,7 @@
           <div style="font-size: 20px; padding-left: 10px">
             <a
               href="{{ url_for('edit', id=hotspot['id'])}}"
-              style="color: white"
+              style="color: {% if hotspot['is_disabled'] %}  white {% else %} #84e68a {% endif %};"
               >{{hotspot['call_number']}}</a
             >
           </div>
