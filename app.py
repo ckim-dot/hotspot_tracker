@@ -4,7 +4,7 @@ import pandas
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your secret key'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -53,7 +53,7 @@ def get_actions(file):
         name = row['CallNumber']
         if type(name) == str and name[:7] == "HOTSPOT":
             # if it does not already exist as an entry and ignore CPL and MMC
-            if (name[8:11] != "CPL" and name[8:11] != "MMC"):
+            if (name[8:11] != "CPL" and name[8:11] != "MML"):
                 current_list.append(name[8:])
 
                 # if not in database it will add to table and list of spots to disable
