@@ -75,7 +75,7 @@ def get_actions(file):
             
             # conn.execute('UPDATE hotspots SET is_disabled = ?' 'WHERE id = ?', (False, hotspot['id']))
     conn.close()
-    
+    os.remove(file.filename)
     return to_disable, to_enable
 
 def search(query):
