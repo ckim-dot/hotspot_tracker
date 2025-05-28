@@ -1,5 +1,14 @@
 <html>
-  {% for hotspot in hotspots %}
+  {% if hotspots | length == 0 %}
+  <div
+    class="d-flex flex-column justify-content-center align-items-center"
+    style="height: 50vh; color: #d3d3d3"
+  >
+    <img src="/static/images/magnifying-glass-solid.svg" alt="" width="50" />
+    <div class="pt-3">No Results</div>
+  </div>
+
+  {% else %} {% for hotspot in hotspots %}
   <div class="d-flex flex-row w-100 justify-content-start">
     <div class="h-50 w-75 m-1 bg-dark text-white" style="border-radius: 10px">
       <div
@@ -59,5 +68,5 @@
       </a> -->
     </form>
   </div>
-  {% endfor %}
+  {% endfor %} {% endif %}
 </html>

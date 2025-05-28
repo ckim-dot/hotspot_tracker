@@ -102,7 +102,7 @@ def get_actions(file):
         return to_disable, to_enable, grace
 
     except ValueError:
-        flash('Error reading file contents. Make sure the file is not corrupted or an .xlsx file.', 'error')
+        flash('Error reading file contents. Make sure the file is not corrupted. Tip: Convert .xls files to .xlsx', 'error')
         return [], [], []
     finally:
         os.remove(file.filename)
