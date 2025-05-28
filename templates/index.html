@@ -4,13 +4,13 @@
   class="d-flex flex-row justify-content-between pt-5 pb-5 align-items-center"
 >
   <h1>{% block title %} Tracker {% endblock %}</h1> 
-  <button type="submit" class="btn" data-toggle="modal" data-target="#modal">
+  <button type="submit" class="btn btn-secondary" data-toggle="modal" data-target="#modal">
     <div
-      class="d-flex align-items-center justify-content-end"
-      style="width: 125px"
-    >
+      class="d-flex align-items-center justify-content-end flex-column"
+    > 
       <img src="/static/images/plus-solid.svg" alt="" width="15" />
-      <span class="pl-2">Add Hotspot</span>
+      <span>Add Hotspot</span>
+
     </div>
   </button>
 </div>
@@ -32,6 +32,11 @@
           id="search-input"
         />
       </div>
+    <!-- TODO -->
+    <!-- <div class="form-check form-switch">
+      <input type="checkbox" role="switch" class="form-check-input" id="sortedSwitch" {% if sorted %} checked {% endif %}>
+      <label class="form-check-label" for="sortedSwitch">Sorted by Enabled/Disabled</label>
+    </div> -->
     <form
       method="POST"
       action="{{url_for('confirm_delete')}}"
@@ -248,6 +253,18 @@
           },
         });
       });
+
+      // TODO
+      // $("#sortedSwitch").on("change", function () {
+      //   $.ajax({
+      //     url: "/toggleSorted",
+      //     type: "GET",
+      //     success: function (response) {
+      //       console.log(response.message)
+      //     },
+          
+      //   });
+      // })
     });
   </script>
   {% endblock%}

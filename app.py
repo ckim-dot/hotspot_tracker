@@ -125,12 +125,29 @@ def get_last_updated():
 
 def set_timestamp():
     # set last updated
-    data = {
-        "last_updated": datetime.datetime.now().strftime("%m/%d/%y %H:%M:%S %p"),
-    }
+    with open('./data/time.json', 'r') as file:
+        data = json.load(file)
+
+    data["last_updated"] = datetime.datetime.now().strftime("%m/%d/%y %H:%M:%S %p")
 
     with open('./data/time.json', 'w') as file:
         json.dump(data, file, indent=4) 
+
+# TODO
+# def toggle_sorted():
+#     with open('./data/time.json', 'r') as file:
+#         data = json.load(file)
+    
+#     current_val = data["sorted"]
+#     data["sorted"] = 1 ^ current_val 
+
+#     with open('./data/time.json', 'w') as file:
+#         json.dump(data, file, indent=4) 
+
+# @app.route('/toggleSorted', methods=["GET"])
+# def toggleSorted():
+#     toggle_sorted()
+#     return redirect(url_for('index'))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -138,6 +155,12 @@ def index():
 
     results = []
 
+    # TODO
+    # with open('./data/time.json', 'r') as file:
+    #     data = json.load(file)
+    
+    # is_sorted = data["sorted"]
+    
     if request.args.get('is_searching'):
         results = search(request.args.get('search_query'))
         return render_template('results.html', hotspots = results)
