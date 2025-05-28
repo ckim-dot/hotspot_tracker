@@ -56,50 +56,56 @@ def delete_enabled():
 def get_actions(file):
     to_enable.clear()
     to_disable.clear()
+
     file.save(file.filename)
-    data = pandas.read_excel(file)
+
     current_list = []
     grace = []
-
-    # iterate rows
-    for index, row in data.iterrows():
-        # if its a hotspot name
-        name = row['CallNumber']
-        
-        if type(name) == str and name[:7] == "HOTSPOT":
-            due_date = row['DueDate']
-            now = datetime.datetime.now()
+    try:
+        data = pandas.read_excel(file)
+        # iterate rows
+        for index, row in data.iterrows():
+            # if its a hotspot name
+            name = row['CallNumber']
             
-            # if it does not already exist as an entry and ignore CPL and MMC
-            if (name[8:11] != "CPL" and name[8:11] != "MML"):
+            if type(name) == str and name[:7] == "HOTSPOT":
+                due_date = row['DueDate']
+                now = datetime.datetime.now()
                 
-                current_list.append(name[8:])
-                
-                # disregard hotspots in grace period from actions
-                if now - due_date > timedelta(days=1):
-                    # if not in database it will add to table and list of spots to disable
-                    # it is entered at enabled
-                    if not exists_in_db(name[8:]):
-                        conn = get_db_connection()
-                        # hotspot = conn.execute('INSERT INTO hotspots (call_number, is_disabled)', (name[8:], False))
-                        to_disable.append(name[8:])
-                        conn.close()
-                else:
-                    grace.append(name[8:])
+                # if it does not already exist as an entry and ignore CPL and MMC
+                if (name[8:11] != "CPL" and name[8:11] != "MML"):
                     
-    
-    # checks if hotspot is no longer on the list -- to enable
-    conn = get_db_connection()
-    disabled_hotspots = conn.execute('SELECT * FROM hotspots WHERE is_disabled = ?', (True,)).fetchall()
-    for hotspot in disabled_hotspots:
-        print("was disabled: " + hotspot['call_number'])
-        if hotspot['call_number'] not in current_list:
-            to_enable.append(hotspot)
-            
-            # conn.execute('UPDATE hotspots SET is_disabled = ?' 'WHERE id = ?', (False, hotspot['id']))
-    conn.close()
-    os.remove(file.filename)
-    return to_disable, to_enable, grace
+                    current_list.append(name[8:])
+                    
+                    # disregard hotspots in grace period from actions
+                    if now - due_date > timedelta(days=1):
+                        # if not in database it will add to table and list of spots to disable
+                        # it is entered at enabled
+                        if not exists_in_db(name[8:]):
+                            conn = get_db_connection()
+                            # hotspot = conn.execute('INSERT INTO hotspots (call_number, is_disabled)', (name[8:], False))
+                            to_disable.append(name[8:])
+                            conn.close()
+                    else:
+                        grace.append(name[8:])
+        
+        # checks if hotspot is no longer on the list -- to enable
+        conn = get_db_connection()
+        disabled_hotspots = conn.execute('SELECT * FROM hotspots WHERE is_disabled = ?', (True,)).fetchall()
+        for hotspot in disabled_hotspots:
+            if hotspot['call_number'] not in current_list:
+                to_enable.append(hotspot)
+                
+                # conn.execute('UPDATE hotspots SET is_disabled = ?' 'WHERE id = ?', (False, hotspot['id']))
+        conn.close()
+        os.remove(file.filename)
+        flash('Changes from "{}" read'.format(file.filename), 'success')
+        return to_disable, to_enable, grace
+
+    except ValueError:
+        flash('Error reading file contents. Make sure the file is not corrupted or an .xlsx file.', 'error')
+        return [], [], []
+
 
 def search(query):
     conn = get_db_connection()
@@ -128,7 +134,6 @@ def set_timestamp():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     last_updated = get_last_updated()
-    print(last_updated)
 
     results = []
 
@@ -156,7 +161,6 @@ def upload():
         if request.files['file'].filename == '':
             flash("please upload a file", 'error')
         else:
-            flash('Changes from "{}" read'.format(request.files['file'].filename), 'success')
             file = request.files['file']
             to_disable, to_enable, grace = get_actions(file)
             return render_template('upload.html', to_enable = to_enable, to_disable = to_disable, grace = grace, submitted=True)
