@@ -98,13 +98,14 @@ def get_actions(file):
                 
                 # conn.execute('UPDATE hotspots SET is_disabled = ?' 'WHERE id = ?', (False, hotspot['id']))
         conn.close()
-        os.remove(file.filename)
         flash('Changes from "{}" read'.format(file.filename), 'success')
         return to_disable, to_enable, grace
 
     except ValueError:
         flash('Error reading file contents. Make sure the file is not corrupted or an .xlsx file.', 'error')
         return [], [], []
+    finally:
+        os.remove(file.filename)
 
 
 def search(query):
