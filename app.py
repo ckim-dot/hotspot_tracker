@@ -100,9 +100,11 @@ def get_actions(file):
         conn.close()
         flash('Changes from "{}" read'.format(file.filename), 'success')
         return to_disable, to_enable, grace
-
     except ValueError:
-        flash('Error reading file contents. Make sure the file is not corrupted. Tip: Convert .xls files to .xlsx', 'error')
+        flash('Error reading file. Make sure the file is not corrupted. Tip: Convert .xls files to .xlsx', 'error')
+        return [], [], []
+    except Exception as e:
+        flash('Error reading file data. Ensure it has columns with names such as \'CallNumber\'.', 'error')
         return [], [], []
     finally:
         os.remove(file.filename)
