@@ -4,15 +4,7 @@
   class="d-flex flex-row justify-content-between pt-5 pb-5 align-items-center"
 >
   <h1>{% block title %} Tracker {% endblock %}</h1> 
-  <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal">
-    <div
-      class="d-flex align-items-center justify-content-end flex-row"
-    > 
-      <img src="/static/images/plus-solid.svg" alt="" width="12" />
-      <span class="pl-2" >Add Hotspot</span>
-
-    </div>
-  </button>
+  
 </div>
 
 <p class="pb-1 pl-2" style="color: #6c757d">{% if last_updated != "" %} Last Updated: {{ last_updated }}{% endif %}</p>
@@ -32,17 +24,27 @@
           id="search-input"
         />
       </div>
-    <form
-      method="POST"
-      action="{{url_for('confirm_delete')}}"
-      
-    >
-      <button type="submit" class="btn btn-outline-danger">
-        Delete All Enabled
-      </button>
+    <div class="d-flex flex-row w-50 justify-content-end">
+      <button type="submit" class="btn btn-outline-dark" data-toggle="modal" data-target="#modal">
+      <div
+        class="d-flex align-items-center justify-content-end flex-row"
+      > 
+        <span>Add Hotspot</span>
       </div>
-    </form>
-  </div>
+      </button>
+        <form
+          method="POST"
+          action="{{url_for('confirm_delete')}}"
+          
+        >
+          <button type="submit" class="btn btn-outline-danger ml-3">
+            Delete All Enabled
+          </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
 
   <div
     class="modal fade"
