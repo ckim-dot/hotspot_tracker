@@ -43,7 +43,7 @@ this will generate your database.db file and provide dummy data
 flask run
 ```
 ### 3. Deployment
-I referenced this article: [https://dev.to/ankur0904/from-localhost-to-the-cloud-a-guide-to-deploy-flask-web-application-on-aws-ec2-1nop]  
-This is deployed with AWS on an EC2 Instance. It is live here: [http://3.17.179.24/]
+I referenced this article: (https://dev.to/ankur0904/from-localhost-to-the-cloud-a-guide-to-deploy-flask-web-application-on-aws-ec2-1nop)
+This is deployed with AWS on an EC2 Instance. It is live here: (http://3.17.179.24/)
 
 
