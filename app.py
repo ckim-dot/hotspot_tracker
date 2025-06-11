@@ -218,7 +218,7 @@ def create():
         call_number = location + " " + tag
 
         is_disabled = 'disable' == request.form['disabled']
-        phone = request.form['phone'] if request.form['phone'] != "" else ""
+        phone = request.form['phone'] if request.form['phone'] != "" else "none"
         conn = get_db_connection()
 
         # check if the call_number already exists
@@ -242,7 +242,7 @@ def edit(id):
 
         is_disabled = 'disable' == request.form['disabled']
         call_number = request.form['name']
-        phone = request.form['phone'] if request.form['phone'] != "" else ""
+        phone = request.form['phone'] if request.form['phone'] != "" else "none"
 
         # check if call_number changed to a taken one
         if original_cn != call_number and exists_in_db(call_number):
