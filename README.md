@@ -9,14 +9,6 @@ The purpose of this app is to streamline the hotspot management process.
 ## 📦 Dependencies
 
 ### Dependencies
-@heroicons/react@2.2.0  
-framer-motion@12.7.4  
-next@15.3.1  
-react@19.1.0  
-react-dom@19.1.0  
-tailwindcss@4.1.4  
-
-### Dev Dependencies
 blinker==1.9.0
 click==8.1.8
 colorama==0.4.6
