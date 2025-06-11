@@ -217,10 +217,16 @@ def create():
         is_disabled = 'disable' == request.form['disabled']
         phone = request.form['phone'] if request.form['phone'] != "" else ""
         conn = get_db_connection()
-        conn.execute('INSERT INTO hotspots (call_number, phone_number, is_disabled) VALUES (?, ?, ?)', (call_number, phone, is_disabled))
-        conn.commit()
-        conn.close()
-        set_timestamp()
+
+        # check if the call_number already exists
+        if exists_in_db(call_number):
+            flash('Hotspot already exists. Item was not added.', 'error')
+        else:
+            conn.execute('INSERT INTO hotspots (call_number, phone_number, is_disabled) VALUES (?, ?, ?)', (call_number, phone, is_disabled))
+            conn.commit()
+            conn.close()
+            set_timestamp()
+
         return redirect(url_for('index'))
     
 @app.route('/<int:id>/edit', methods=("POST", "GET"))
@@ -229,15 +235,23 @@ def edit(id):
     is_disabled = hotspot['is_disabled']
     
     if request.method == "POST":
+        original_cn = get_hotspot(id)['call_number']
+
         is_disabled = 'disable' == request.form['disabled']
         call_number = request.form['name']
         phone = request.form['phone'] if request.form['phone'] != "" else ""
-        conn = get_db_connection()
-        conn.execute('UPDATE hotspots SET call_number = ?, phone_number = ?, is_disabled = ?' 'WHERE id = ?', (call_number, phone, is_disabled,id))
-        conn.commit()
-        conn.close()
-        set_timestamp()
-        flash('"{}" updated'.format(hotspot['call_number']), 'success')
-        return redirect(url_for('index'))
+
+        # check if call_number changed to a taken one
+        if original_cn != call_number and exists_in_db(call_number):
+            flash('Hotspot with that call number already exists. Edit failed.', 'error')
+        else:
+            conn = get_db_connection()
+            conn.execute('UPDATE hotspots SET call_number = ?, phone_number = ?, is_disabled = ?' 'WHERE id = ?', (call_number, phone, is_disabled,id))
+            conn.commit()
+            conn.close()
+            set_timestamp()
+            flash('"{}" updated'.format(hotspot['call_number']), 'success')
+            return redirect(url_for('index'))
+    
     return render_template('edit.html', hotspot=hotspot, is_disabled=is_disabled)
 
