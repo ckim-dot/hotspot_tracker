@@ -213,7 +213,10 @@ def delete(id):
 @app.route('/create', methods=("POST",))
 def create():
     if request.method == "POST":
-        call_number = request.form['name']
+        location = request.form['location']
+        tag = request.form['tag']
+        call_number = location + " " + tag
+
         is_disabled = 'disable' == request.form['disabled']
         phone = request.form['phone'] if request.form['phone'] != "" else ""
         conn = get_db_connection()

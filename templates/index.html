@@ -68,21 +68,45 @@
         <form action="{{url_for('create')}}" method="POST">
           <div class="modal-body">
             <div class="form-group">
-              <label for="name">Call Number</label
-              ><input
-                name="name"
-                type="text"
-                placeholder="ABCD 123"
-                class="form-control"
-                required
-              />
+              <div class="d-flex flex-row w-100 align-items-center justify-content-between">
+                <div style="width: 205px">
+                  <label for="">Location</label>
+                  <fieldset id="location-radios">
+                    <div class="d-flex flex-row justify-content-between">
+                      <div id="ecpl-box" class="d-flex flex-row align-items-center" style="height:38px; width:100px; border-style:solid; border-width:1px; border-radius:4px; border-color: #2c83ec; background-color: #d4e9fe;">
+                        <input type="radio" id="ecpl" name="location" value="ECPL" class="ml-2" checked>
+                        <label for="ecpl" class="mb-0 p-2">ECPL</label>
+                      </div>
+
+                      <div id="ec-box" class="d-flex align-items-center" style="height:38px; width:100px; border-style:solid; border-width:1px; border-radius:4px; border-color: #ced4da">
+                        <input type="radio" id="ec" name="location" value="EC" class="ml-2">
+                        <label for="ec" class="mb-0 p-2">EC</label>
+                      </div>
+
+                    </div>
+                  </fieldset>
+                  
+                </div>
+                <div class="w-50">
+                  <label for="tag">Tag Number</label
+                  ><input
+                    name="tag"
+                    type="text"
+                    placeholder="ex. 56B"
+                    class="form-control"
+                    required
+                  />
+                </div>
+
+              </div>
+
             </div>
             <div class="form-group">
-              <label for="phone">Phone Number</label
+              <label for="phone">Phone Number (XXX-XXX-1234)</label
               ><input
                 name="phone"
                 type="text"
-                placeholder="XXXX"
+                placeholder="1234"
                 maxlength="4"
                 class="form-control"
               />
@@ -179,7 +203,6 @@
               <div class="d-flex flex-row align-items-center justify-content-between w-25">
                 <div style="background-color:#a8a8a8; width:1px; height:32px"></div>
                 <span style="color: #d8d8d8; font-size: medium; font-style:italic">{{hotspot['phone_number']}}</span>
-
               </div>
               
             </div>
@@ -251,6 +274,26 @@
             "transparent";
           document.getElementById("enabled-box").style.borderColor = "#2c83ec";
           document.getElementById("enabled-box").style.backgroundColor =
+            "#d4e9fe";
+        }
+      });
+
+      document
+      .getElementById("location-radios")
+      .addEventListener("change", function (event) {
+        if (document.getElementById("ecpl").checked) {
+          document.getElementById("ec-box").style.borderColor = "#ced4da";
+          document.getElementById("ec-box").style.backgroundColor =
+            "transparent";
+          document.getElementById("ecpl-box").style.borderColor = "#2c83ec";
+          document.getElementById("ecpl-box").style.backgroundColor =
+            "#d4e9fe";
+        } else {
+          document.getElementById("ecpl-box").style.borderColor = "#ced4da";
+          document.getElementById("ecpl-box").style.backgroundColor =
+            "transparent";
+          document.getElementById("ec-box").style.borderColor = "#2c83ec";
+          document.getElementById("ec-box").style.backgroundColor =
             "#d4e9fe";
         }
       });
