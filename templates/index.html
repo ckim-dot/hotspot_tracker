@@ -77,7 +77,17 @@
                 required
               />
             </div>
-            <div class="">
+            <div class="form-group">
+              <label for="phone">Phone Number</label
+              ><input
+                name="phone"
+                type="text"
+                placeholder="XXXX"
+                maxlength="4"
+                class="form-control"
+              />
+            </div>
+            <div>
               <fieldset id="radios">
                 <div
                   class="d-flex flex-row justify-content-between w-100"
@@ -157,12 +167,21 @@
           <div
             class="h-100 d-flex flex-row p-3 justify-content-between align-items-center"
           >
-            <div style="font-size: 20px; padding-left: 10px">
+            <div class="d-flex w-25 flex-row align-items-center justify-content-between" style="font-size: 20px; padding-left: 10px">
               <a
                 href="{{ url_for('edit', id=hotspot['id'])}}"
                 style="color: {% if hotspot['is_disabled'] %}  white {% else %} #84e68a {% endif %};"
-                >{{hotspot['call_number']}}</a
-              >
+                >
+                <div class=" h-100">
+                  {{hotspot['call_number']}}
+                </div>
+              </a>
+              <div class="d-flex flex-row align-items-center justify-content-between w-25">
+                <div style="background-color:#a8a8a8; width:1px; height:32px"></div>
+                <span style="color: #d8d8d8; font-size: medium; font-style:italic">{{hotspot['phone_number']}}</span>
+
+              </div>
+              
             </div>
             {% if hotspot['is_disabled'] %}
             <div

@@ -7,6 +7,17 @@
     <label for="name">Call Number</label>
     <input type="text" name="name" class="form-control" required value="{{ request.form['name'] or hotspot['call_number'] }}"/>
   </div>
+  <div class="form-group w-50">
+    <label for="phone">Phone Number</label
+    ><input
+      name="phone"
+      type="text"
+      placeholder="XXXX"
+      class="form-control"
+      maxlength="4"
+      value="{{ request.form['phone'] or hotspot['phone_number'] }}"
+    />
+  </div>
   <fieldset id="radios">
       <div
         class="d-flex flex-row justify-content-start w-100"

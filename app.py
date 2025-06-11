@@ -31,9 +31,9 @@ def update_status(to_disable, to_enable):
     conn = get_db_connection()
     for disable in to_disable:
         # prevent adding the same hotspot
-        hotspot = conn.execute('SELECT * FROM hotspots WHERE call_number = ?', (disable,)).fetchone()
+        hotspot = conn.execute('SELECT * FROM hotspots WHERE call_number = ?', (disable[0],)).fetchone()
         if hotspot is None:
-            conn.execute('INSERT INTO hotspots (call_number, is_disabled) VALUES (?, ?)', (disable, True))
+            conn.execute('INSERT INTO hotspots (call_number, phone_number, is_disabled) VALUES (?, ?, ?)', (disable[0], disable[1], True))
             conn.commit()
     for enable in to_enable:
         conn.execute('UPDATE hotspots SET is_disabled = ?' 'WHERE call_number = ?', (False, enable['call_number']))
@@ -71,7 +71,12 @@ def get_actions(file):
             if type(name) == str and name[:7] == "HOTSPOT":
                 due_date = row['DueDate']
                 now = datetime.datetime.now()
-                
+                phone = ""
+                # gets phone number
+                note = row['NonPublicNote'].split()
+                for i in range(0, len(note)):
+                    if note[i][:5] == 'Phone':
+                        phone = note[i+1][-4:]
                 # if it does not already exist as an entry and ignore CPL and MMC
                 if (name[8:11] != "CPL" and name[8:11] != "MML"):
                     
@@ -81,10 +86,11 @@ def get_actions(file):
                     if now - due_date > timedelta(days=1):
                         # if not in database it will add to table and list of spots to disable
                         # it is entered at enabled
+
                         if not exists_in_db(name[8:]):
                             conn = get_db_connection()
                             # hotspot = conn.execute('INSERT INTO hotspots (call_number, is_disabled)', (name[8:], False))
-                            to_disable.append(name[8:])
+                            to_disable.append([name[8:], phone])
                             conn.close()
                     else:
                         grace.append(name[8:])
@@ -209,8 +215,9 @@ def create():
     if request.method == "POST":
         call_number = request.form['name']
         is_disabled = 'disable' == request.form['disabled']
+        phone = request.form['phone'] if request.form['phone'] != "" else ""
         conn = get_db_connection()
-        conn.execute('INSERT INTO hotspots (call_number, is_disabled) VALUES (?, ?)', (call_number, is_disabled))
+        conn.execute('INSERT INTO hotspots (call_number, phone_number, is_disabled) VALUES (?, ?, ?)', (call_number, phone, is_disabled))
         conn.commit()
         conn.close()
         set_timestamp()
@@ -224,8 +231,9 @@ def edit(id):
     if request.method == "POST":
         is_disabled = 'disable' == request.form['disabled']
         call_number = request.form['name']
+        phone = request.form['phone'] if request.form['phone'] != "" else ""
         conn = get_db_connection()
-        conn.execute('UPDATE hotspots SET call_number = ?, is_disabled = ?' 'WHERE id = ?', (call_number, is_disabled,id))
+        conn.execute('UPDATE hotspots SET call_number = ?, phone_number = ?, is_disabled = ?' 'WHERE id = ?', (call_number, phone, is_disabled,id))
         conn.commit()
         conn.close()
         set_timestamp()
