@@ -38,20 +38,15 @@
     {% endif %}
     
     {% for hotspot in to_enable %}
-    <div class="d-flex flex-col w-100 justify-content-start">
-      <div class="h-50 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
-        <div
-          class="h-100 d-flex flex-row p-3 justify-content-between align-items-center" 
-        >
-          <div class="d-flex w-25 flex-row align-items-center justify-content-between" style="font-size: 20px; padding-left: 10px">
+      <div class="d-flex flex-row w-100">
+        <div class="h-60 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
+          <div
+            class="d-flex flex-row p-3 justify-content-between align-items-center" 
+          >
             <div style="padding-left: 10px">{{hotspot['call_number']}}</div>
-            <div class="d-flex flex-row align-items-center justify-content-between w-25">
-              <div style="background-color:#a8a8a8; width:1px; height:32px"></div>
-              <span style="color: #d8d8d8; font-size: medium; font-style:italic">{{hotspot['phone_number']}}</span>
-            </div>
           </div>
+        </div>
       </div>
-    </div>
     {% endfor %}
   </div>
 
@@ -63,18 +58,13 @@
     {% endif %}
     
     {% for hotspot in to_disable %}
-    <div class="d-flex flex-row w-100 justify-content-start">
-      <div class="h-50 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
+    <div class="d-flex flex-row w-100">
+      <div class="h-60 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
         <div
-          class="h-100 d-flex flex-row p-3 justify-content-between align-items-center" 
+          class="d-flex flex-row p-3 justify-content-between align-items-center"
         >
-          <div class="d-flex w-25 flex-row align-items-center justify-content-between" style="font-size: 20px; padding-left: 10px">
-            <div style="padding-left: 10px">{{hotspot[0]}}</div>
-            <div class="d-flex flex-row align-items-center justify-content-between w-25">
-              <div style="background-color:#a8a8a8; width:1px; height:32px"></div>
-              <span style="color: #d8d8d8; font-size: medium; font-style:italic">{{hotspot[1]}}</span>
-            </div>
-          </div>
+          <div style="padding-left: 10px">{{hotspot[0]}} ---- {{hotspot[1]}}</div>
+        </div>
       </div>
     </div>
     {% endfor %}
@@ -88,20 +78,15 @@
     {% endif %}
     
     {% for hotspot in grace %}
-    <div class="d-flex flex-row w-100 justify-content-start">
-      <div class="h-50 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
-        <div
-          class="h-100 d-flex flex-row p-3 justify-content-between align-items-center" 
-        >
-          <div class="d-flex w-25 flex-row align-items-center justify-content-between" style="font-size: 20px; padding-left: 10px">
-            <div style="padding-left: 10px">{{hotspot[0]}}</div>
-            <div class="d-flex flex-row align-items-center justify-content-between w-25">
-              <div style="background-color:#a8a8a8; width:1px; height:32px"></div>
-              <span style="color: #d8d8d8; font-size: medium; font-style:italic">{{hotspot[1]}}</span>
-            </div>
+      <div class="d-flex flex-row w-100">
+        <div class="h-60 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
+          <div
+            class="d-flex flex-row p-3 justify-content-between align-items-center" 
+          >
+            <div style="padding-left: 10px">{{hotspot}}</div>
           </div>
+        </div>
       </div>
-    </div>
     {% endfor %}
   </div>
 
