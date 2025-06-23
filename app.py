@@ -93,7 +93,7 @@ def get_actions(file):
                             to_disable.append([name[8:], phone])
                             conn.close()
                     else:
-                        grace.append(name[8:])
+                        grace.append([name[8:], phone])
         
         # checks if hotspot is no longer on the list -- to enable
         conn = get_db_connection()
