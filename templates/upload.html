@@ -26,13 +26,35 @@
       
   </div>
 </div>
-{% if not submitted %}
-<div class="w-100 d-flex justify-content-center align-items-center" style="height: 500px; background-color: #F8F8F8;">Upload an excel file to see changes</div>
+<div class="d-flex flex-row w-100 justify-content-start">
+  <div class="w-100 m-1 text-black" style="border-radius: 10px">
+        <div
+          class="d-flex flex-row pl-3 pr-3 justify-content-between align-items-center"
+        >
+          <div class="d-flex w-25 flex-row align-items-center justify-content-between">
+            Call Number
+            <div class="d-flex flex-row align-items-center justify-content-between w-25">
+              Phone
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<div class="d-flex flex-row w-100 justify-content-start mb-3" style="background-color: #ced4da; height:1px"></div>
 
+{% if not submitted %}
+<div class="d-flex flex-column w-100">
+  <div class="d-flex flex-column pb-4 w-100">
+    <div class="w-100 d-flex justify-content-center align-items-center flex-column" style="height: 225px; border-radius: 10px; border-style: dashed; outline-width:2px; border-color: #ced4da">
+      Upload an excel file to see hotspots to ENABLE, DISABLE, GRACE
+    </div>
+  </div>
+  
+</div>
 {% else %}
 <div class="d-flex flex-column w-100">
   <div class="d-flex flex-column pb-4 w-100">
-    <h1>Enable</h1>
+    <h2>Enable</h2>
     {% if to_enable | length == 0 %}
       <p class="pl-3">Nothing.</p>
     {% endif %}
@@ -41,9 +63,13 @@
       <div class="d-flex flex-row w-100">
         <div class="h-60 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
           <div
-            class="d-flex flex-row p-3 justify-content-between align-items-center" 
+            class="w-25 d-flex flex-row p-3 justify-content-between align-items-center" 
           >
             <div style="padding-left: 10px">{{hotspot['call_number']}}</div>
+            <div class="d-flex flex-row align-items-center justify-content-between w-25">
+              <div style="background-color:#a8a8a8; width:1px; height:32px"></div>
+              <span style="color: #d8d8d8; font-size: medium; font-style:italic">{{hotspot['phone_number']}}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -51,7 +77,7 @@
   </div>
 
   <div class="d-flex flex-column pb-4 w-100">
-    <h1>Disable</h1>
+    <h2>Disable</h2>
     
     {% if to_disable | length == 0 %}
       <p class="pl-3">Nothing.</p>
@@ -61,9 +87,13 @@
     <div class="d-flex flex-row w-100">
       <div class="h-60 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
         <div
-          class="d-flex flex-row p-3 justify-content-between align-items-center"
+          class="w-25 d-flex flex-row p-3 justify-content-between align-items-center"
         >
-          <div style="padding-left: 10px">{{hotspot[0]}} ---- {{hotspot[1]}}</div>
+          <div style="padding-left: 10px">{{hotspot[0]}}</div>
+          <div class="d-flex flex-row align-items-center justify-content-between w-25">
+              <div style="background-color:#a8a8a8; width:1px; height:32px"></div>
+              <span style="color: #d8d8d8; font-size: medium; font-style:italic">{{hotspot[1]}}</span>
+            </div>
         </div>
       </div>
     </div>
@@ -72,7 +102,7 @@
 
   <div class="d-flex flex-column w-100">
   <div class="d-flex flex-column pb-4 w-100">
-    <h1>Grace</h1>
+    <h2>Grace</h2>
     {% if grace | length == 0 %}
       <p class="pl-3">Nothing.</p>
     {% endif %}
@@ -81,9 +111,13 @@
       <div class="d-flex flex-row w-100">
         <div class="h-60 w-100 m-1 bg-dark text-white" style="border-radius: 10px">
           <div
-            class="d-flex flex-row p-3 justify-content-between align-items-center" 
+            class="w-25 d-flex flex-row p-3 justify-content-between align-items-center" 
           >
-            <div style="padding-left: 10px">{{hotspot}}</div>
+            <div style="padding-left: 10px">{{hotspot[0]}}</div>
+            <div class="d-flex flex-row align-items-center justify-content-between w-25">
+              <div style="background-color:#a8a8a8; width:1px; height:32px"></div>
+              <span style="color: #d8d8d8; font-size: medium; font-style:italic">{{hotspot[1]}}</span>
+            </div>
           </div>
         </div>
       </div>
