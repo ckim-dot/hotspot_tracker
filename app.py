@@ -213,19 +213,19 @@ def delete(id):
 @app.route('/create', methods=("POST",))
 def create():
     if request.method == "POST":
-        location = request.form['location']
+        # location = request.form['location']
         tag = request.form['tag']
-        call_number = location + " " + tag
+        # call_number = location + " " + tag
 
         is_disabled = 'disable' == request.form['disabled']
         phone = request.form['phone'] if request.form['phone'] != "" else "none"
         conn = get_db_connection()
 
         # check if the call_number already exists
-        if exists_in_db(call_number):
+        if exists_in_db(tag):
             flash('Hotspot already exists. Item was not added.', 'error')
         else:
-            conn.execute('INSERT INTO hotspots (call_number, phone_number, is_disabled) VALUES (?, ?, ?)', (call_number, phone, is_disabled))
+            conn.execute('INSERT INTO hotspots (call_number, phone_number, is_disabled) VALUES (?, ?, ?)', (tag, phone, is_disabled))
             conn.commit()
             conn.close()
             set_timestamp()
