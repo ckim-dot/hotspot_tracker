@@ -5,6 +5,7 @@ import os
 from datetime import timedelta
 import datetime
 import json
+import re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
@@ -68,7 +69,7 @@ def get_actions(file):
             # if its a hotspot name
             name = row['CallNumber']
             
-            if type(name) == str and name[:7] == "HOTSPOT":
+            if type(name) == str and "HOTSPOT" in name:
                 due_date = row['DueDate']
                 now = datetime.datetime.now()
                 phone = ""
@@ -79,21 +80,22 @@ def get_actions(file):
                         phone = note[i+1][-4:]
                 # if it does not already exist as an entry and ignore CPL and MMC
                 if (name[8:11] != "CPL" and name[8:11] != "MML"):
-                    
-                    current_list.append(name[8:])
-                    
+                    # grab the call number                    
+                    p = r'\bHOTSPOT\b'
+                    hs_name = re.split(p, name)[-1]
+                    current_list.append(hs_name)
                     # disregard hotspots in grace period from actions
                     if now - due_date > timedelta(days=1):
                         # if not in database it will add to table and list of spots to disable
                         # it is entered at enabled
 
-                        if not exists_in_db(name[8:]):
+                        if not exists_in_db(hs_name):
                             conn = get_db_connection()
                             # hotspot = conn.execute('INSERT INTO hotspots (call_number, is_disabled)', (name[8:], False))
-                            to_disable.append([name[8:], phone])
+                            to_disable.append([hs_name, phone])
                             conn.close()
                     else:
-                        grace.append([name[8:], phone])
+                        grace.append([hs_name, phone])
         
         # checks if hotspot is no longer on the list -- to enable
         conn = get_db_connection()
