@@ -70,18 +70,22 @@ def get_actions(file):
             name = row['CallNumber']
             
             if type(name) == str and "HOTSPOT" in name:
+
                 due_date = row['DueDate']
                 now = datetime.datetime.now()
                 phone = ""
                 # gets phone number
                 note = row['NonPublicNote'].split()
+                
                 for i in range(0, len(note)):
                     if note[i][:5] == 'Phone':
                         phone = note[i+1][-4:]
+                
                 # if it does not already exist as an entry and ignore CPL and MMC
                 if (name[8:11] != "CPL" and name[8:11] != "MML"):
-                    # grab the call number                    
-                    p = r'\bHOTSPOT\b'
+                    
+                    # current_list.append(name[8:])
+                    p = r'\bHOTSPOT \b'
                     hs_name = re.split(p, name)[-1]
                     current_list.append(hs_name)
                     # disregard hotspots in grace period from actions
@@ -95,11 +99,12 @@ def get_actions(file):
                             to_disable.append([hs_name, phone])
                             conn.close()
                     else:
-                        grace.append([hs_name, phone])
+                        grace.append(hs_name)
         
         # checks if hotspot is no longer on the list -- to enable
         conn = get_db_connection()
         disabled_hotspots = conn.execute('SELECT * FROM hotspots WHERE is_disabled = ?', (True,)).fetchall()
+        
         for hotspot in disabled_hotspots:
             if hotspot['call_number'] not in current_list:
                 to_enable.append(hotspot)
