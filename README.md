@@ -1,12 +1,12 @@
-## 💬 Purpose
+## Purpose
 The purpose of this app is to streamline the hotspot management process.
 
-## ⚙️ Major Functions
+## Major Functions
 - Displays a list of hotspots and whether they're disabled/enabled
 - Given an excel file with a list of overdue hotspots, this app automatically checks for which ones need their status changed
 - Users can add hotspots manually
 
-## 📦 Dependencies
+## Dependencies
 
 ### Dependencies
 blinker==1.9.0  
@@ -27,7 +27,7 @@ tzdata==2025.2
 Werkzeug==3.1.3  
 xlrd==2.0.1  
 
-## 🛠️ Build/Deploy Instructions
+## Build/Deploy Instructions
 ### 1. Prerequisites
 Flask version **3.1** or higher  
 It is recommended to make a virtual environment to manage these dependencies
