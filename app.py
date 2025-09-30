@@ -59,7 +59,7 @@ def get_actions(file):
     to_disable.clear()
 
     file.save(file.filename)
-
+    
     current_list = []
     grace = []
     try:
@@ -68,19 +68,19 @@ def get_actions(file):
         for index, row in data.iterrows():
             # if its a hotspot name
             name = row['CallNumber']
-            
-            if type(name) == str and "HOTSPOT" in name:
-
+            print("name" + name)
+            if type(name) == str and ("HOTSPOT" in name or "Hotspot" in name):
+                print("hotspot detected")
                 due_date = row['DueDate']
                 now = datetime.datetime.now()
                 phone = ""
                 # gets phone number
                 note = row['NonPublicNote'].split()
-                
+                print("note" + note)
                 for i in range(0, len(note)):
                     if note[i][:5] == 'Phone':
                         phone = note[i+1][-4:]
-                
+                print(name[8:11])
                 # if it does not already exist as an entry and ignore CPL and MMC
                 if (name[8:11] != "CPL" and name[8:11] != "MML"):
                     
@@ -88,11 +88,12 @@ def get_actions(file):
                     p = r'\bHOTSPOT \b'
                     hs_name = re.split(p, name)[-1]
                     current_list.append(hs_name)
+                    print("current list: " + str(current_list))
                     # disregard hotspots in grace period from actions
                     if now - due_date > timedelta(days=1):
                         # if not in database it will add to table and list of spots to disable
                         # it is entered at enabled
-
+                        print("here")
                         if not exists_in_db(hs_name):
                             conn = get_db_connection()
                             # hotspot = conn.execute('INSERT INTO hotspots (call_number, is_disabled)', (name[8:], False))
@@ -220,10 +221,7 @@ def delete(id):
 @app.route('/create', methods=("POST",))
 def create():
     if request.method == "POST":
-        # location = request.form['location']
         tag = request.form['tag']
-        # call_number = location + " " + tag
-
         is_disabled = 'disable' == request.form['disabled']
         phone = request.form['phone'] if request.form['phone'] != "" else "none"
         conn = get_db_connection()
